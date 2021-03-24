@@ -1,0 +1,17 @@
+.cardsContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 2em;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.cardFit {
+  width: 15rem;
+}
+
+.cardImages {
+  width: 100%;
+  height: 20vh;
+  object-fit: cover;
+}
