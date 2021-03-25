@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  NotFoundException,
 } from "@nestjs/common";
 import { UsersService } from "./users.service";
 import { CreateUserDto } from "./dto/create-user.dto";
@@ -19,8 +20,8 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto): Promise<User> {
-    return this.usersService.create(createUserDto);
+  async create(@Body() createUserDto: CreateUserDto): Promise<User> {
+    return await this.usersService.create(createUserDto);
   }
 
   // @Get()
@@ -35,11 +36,13 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @Put(":id")
-  update(
+  async update(
     @Param("id") id: string,
     @Body() updateUserDto: UpdateUserDto,
   ): Promise<User> {
-    return this.usersService.update(id, updateUserDto);
+    const updatedUser = await this.usersService.update(id, updateUserDto);
+    if (!updatedUser) throw new NotFoundException();
+    return updatedUser;
   }
 
   // @Delete(":id")

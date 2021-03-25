@@ -14,17 +14,34 @@ export class UsersService {
     return await createduser.save();
   }
 
-  async findAll(): Promise<UserDocument[]> {
+  async findAll(): Promise<User[]> {
     return await this.userModel.find({}).exec();
   }
 
   async findOne(email: string): Promise<User> {
     // lean() method is used to obtain a plain object instead of a Query object
-    return await this.userModel.findOne({ email: email }).lean().exec();
+    return await this.userModel
+      .findOne({ email: email })
+      .select("+password")
+      .lean()
+      .exec();
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
-    return await this.userModel.findByIdAndUpdate(id, updateUserDto, {
+  async update(
+    id: string,
+    updateUserDto: UpdateUserDto,
+  ): Promise<UserDocument> {
+    if (updateUserDto.password) {
+      const userToUpdate = await this.userModel
+        .findById(id)
+        .select("+password");
+      userToUpdate.password = updateUserDto.password;
+      userToUpdate.save();
+    }
+
+    const { password, ...rest } = updateUserDto;
+
+    return await this.userModel.findByIdAndUpdate(id, rest, {
       new: true,
       omitUndefined: true,
     });

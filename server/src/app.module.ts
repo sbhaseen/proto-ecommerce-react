@@ -8,7 +8,10 @@ import { AuthModule } from "./auth/auth.module";
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    MongooseModule.forRoot(process.env.DB_DEV || process.env.DB),
+    MongooseModule.forRoot(process.env.DB_DEV || process.env.DB, {
+      useCreateIndex: true,
+      useFindAndModify: false,
+    }),
     UsersModule,
     ItemsModule,
     AuthModule,

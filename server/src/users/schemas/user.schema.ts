@@ -11,19 +11,23 @@ export class User {
   @Prop({ required: true, unique: true })
   email: string;
 
-  @Prop({ require: true })
+  @Prop({ require: true, select: false })
   password: string;
 
-  @Prop(
-    raw({
-      street: { type: String, required: true },
-      city: { type: String, required: true },
-      state: { type: String, required: true },
-      postalCode: { type: String, required: true },
-      country: { type: String, required: true },
-    }),
-  )
-  address: Record<string, any>;
+  @Prop({ require: true })
+  street: string;
+
+  @Prop({ require: true })
+  city: string;
+
+  @Prop({ require: true })
+  state: string;
+
+  @Prop({ require: true })
+  postalCode: string;
+
+  @Prop({ require: true })
+  country: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
