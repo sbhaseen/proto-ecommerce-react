@@ -7,14 +7,14 @@ import {
   Param,
   Delete,
   Query,
-  HttpException,
-  HttpStatus,
+  BadRequestException,
 } from "@nestjs/common";
 import { ItemsService } from "./items.service";
+import { Item } from "./schemas/item.schema";
 import { CreateItemDto } from "./dto/create-item.dto";
 import { UpdateItemDto } from "./dto/update-item.dto";
-import { Item } from "./schemas/item.schema";
 import { PaginatedItems } from "./dto/paginated-items.dto";
+import { PaginationQuery } from "./dto/pagination-query.dto";
 
 @Controller("items")
 export class ItemsController {
@@ -26,9 +26,9 @@ export class ItemsController {
   // }
 
   @Get()
-  findAll(@Query() query: any): Promise<PaginatedItems> {
+  findAll(@Query() query: PaginationQuery): Promise<PaginatedItems> {
     if (query.page <= 0 || query.limit <= 0) {
-      throw new HttpException("Bad Request", HttpStatus.BAD_REQUEST);
+      throw new BadRequestException();
     }
     return this.itemsService.findAll(query);
   }
