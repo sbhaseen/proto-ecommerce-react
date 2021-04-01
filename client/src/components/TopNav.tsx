@@ -1,12 +1,5 @@
 import React, { ReactElement } from "react";
-import {
-  Button,
-  Form,
-  FormControl,
-  Nav,
-  Navbar,
-  NavDropdown,
-} from "react-bootstrap";
+import { Button, Form, FormControl, Nav, Navbar } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 export default function TopNav(): ReactElement {
@@ -33,7 +26,11 @@ export default function TopNav(): ReactElement {
           <Nav.Link as={Link} to="/login">
             Login
           </Nav.Link>
-          <NavDropdown title="Dropdown" id="topNav">
+          <Nav.Link as={Link} to="/cart">
+            Cart
+          </Nav.Link>
+
+          {/* <NavDropdown title="Dropdown" id="topNav">
             <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
             <NavDropdown.Item href="#action/3.2">
               Another action
@@ -43,7 +40,7 @@ export default function TopNav(): ReactElement {
             <NavDropdown.Item href="#action/3.4">
               Separated link
             </NavDropdown.Item>
-          </NavDropdown>
+          </NavDropdown> */}
         </Nav>
 
         <Form inline>

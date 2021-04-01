@@ -1,18 +1,10 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
+import { RegisterUserInterface, UserDataInterface } from "../common-interfaces";
 
 interface AuthContextInterface {
   currentUser: string | null;
   loading: boolean;
-}
-
-interface UserDataInterface {
-  email: string;
-  password: string;
-}
-
-interface RegisterUserInterface extends UserDataInterface {
-  address: string;
 }
 
 const AuthContext = React.createContext<AuthContextInterface | null>(null);

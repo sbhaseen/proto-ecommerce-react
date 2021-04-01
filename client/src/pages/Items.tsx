@@ -1,9 +1,9 @@
 import axios from "axios";
 import React, { ReactElement, useState, useEffect } from "react";
-import { Card, Pagination } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Container, Pagination } from "react-bootstrap";
 import { API_PATHS } from "../API";
-import { Item, PaginatedItems } from "../common-interfaces";
+import { PaginatedItems } from "../common-interfaces";
+import MapCards from "../components/MapCards";
 import PaginationNav from "../components/PaginationNav";
 import styles from "./Items.module.css";
 
@@ -46,63 +46,37 @@ export default function Items(): ReactElement {
   }, [currentPage]);
 
   function handleNextPage(): void {
-    if (nextPage !== null && nextPage < totalPages) {
-      setCurrentPage(nextPage);
-    } else {
-      return;
-    }
+    if (nextPage === null) return;
+    if (nextPage > totalPages) return;
+
+    setCurrentPage(nextPage);
   }
 
   function handlePreviousPage(): void {
-    if (previousPage !== null) {
-      setCurrentPage(previousPage);
-    } else {
-      return;
-    }
+    if (previousPage === null) return;
+
+    setCurrentPage(previousPage);
   }
 
   function handleGoToPage(page: number): void {
-    if (page <= totalPages && page > 0) {
-      setCurrentPage(page);
-    } else {
-      return;
-    }
-  }
+    if (page > totalPages) return;
+    if (page <= 0) return;
 
-  function mapCards(item: Item): ReactElement {
-    return (
-      <Card key={item._id} className={styles.cardFit}>
-        <Card.Img
-          variant="top"
-          src={item.image}
-          className={styles.cardImages}
-        />
-        <Card.Body>
-          <Card.Title>{item.productName}</Card.Title>
-          <Card.Text>{item.brand}</Card.Text>
-          <Card.Text>
-            <Link to={`/items/${item._id}`}>View Product</Link>
-          </Card.Text>
-        </Card.Body>
-        <Card.Footer>
-          <small className="text-muted">In Stock: {item.stockQty}</small>
-        </Card.Footer>
-      </Card>
-    );
+    setCurrentPage(page);
   }
 
   return (
     <>
       <h1 className="text-center">Items</h1>
-      <div className={styles.cardsContainer}>
+      <Container className={styles.cardsContainer}>
         {loading ? (
           <h1>Loading...</h1>
         ) : items?.data ? (
-          items.data.map(mapCards)
+          items.data.map(MapCards)
         ) : (
           <p>No Data</p>
         )}
-      </div>
+      </Container>
       {!loading && items?.data ? (
         <Pagination
           style={{

@@ -12,6 +12,8 @@ import ItemDetails from "./pages/ItemDetails";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Footer from "./components/Footer";
+import Cart from "./pages/Cart";
+import Checkout from "./pages/Checkout";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
@@ -30,8 +32,10 @@ function App() {
               <Route path="/register" component={Register} />
               <Route path="/login" component={Login} />
               <Route path="/register" component={Register} />
+              <Route path="/cart" component={Cart} />
+              <Route path="/checkout" component={Checkout} />
               <Route path="/" exact component={Home} />
-              <Route path="/*" component={ErrorPage} />
+              <Route path="*" component={ErrorPage} />
             </Switch>
           </Container>
           <Footer />

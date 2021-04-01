@@ -1,8 +1,12 @@
-# React Ecommerce Starter
+# React and NestJS E-commerce Starter
 
-A full stack web application for a typical ecommerce use case scenario built with React, NestJS and TypeScript.
+A full stack web application for a typical e-commerce use case scenario built with React, NestJS and TypeScript.
+
+Although built as a demonstrantion project, it is hoped that it can be of use to anybody seeking to quickly prototype a custom e-commerce solution.
 
 React TypeScript best practices are applied as recommended by [React TypeScript Cheatsheet](https://github.com/typescript-cheatsheets/react).
+
+🚧 Work In Progress: See Projects for details. 🚧
 
 # Key Features:
 
@@ -103,6 +107,14 @@ You can learn more in the [Create React App documentation](https://facebook.gith
 
 To learn React, check out the [React documentation](https://reactjs.org/).
 
+## Built With
+
+- React
+- React Router DOM
+- React Bootstrap
+- Bootstrap npm distribution
+- Axios
+
 ---
 
 # Getting Started with NestJS
@@ -141,3 +153,11 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+
+## Built With
+
+- NestJS
+- Express.js
+- Mongoose
+- Passport
+- Bcrypt

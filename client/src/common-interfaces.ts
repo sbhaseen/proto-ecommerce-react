@@ -14,3 +14,19 @@ export interface PaginatedItems {
   total: number;
   data?: Item[];
 }
+
+export interface UserDataInterface {
+  email: string;
+  password: string;
+}
+
+export interface RegisterUserInterface extends UserDataInterface {
+  name: string;
+  email: string;
+  password: string;
+  street: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  country: string;
+}
