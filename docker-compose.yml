@@ -1,0 +1,45 @@
+version: "3.9"
+services:
+  client:
+    container_name: ecommerce-starter-client
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./client/:/usr/src/app
+      - /usr/src/app/node_modules
+    networks:
+      - ecommerce-starter-app
+  server:
+    container_name: ecommerce-starter-server
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      NODE_ENV: development
+    volumes:
+      - ./server/:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - mongo
+    networks:
+      - ecommerce-starter-app
+  mongo:
+    image: mongo:4.4.4-bionic
+    ports:
+      - "27017:27017"
+    networks:
+      - ecommerce-starter-app
+    volumes:
+      - mongo-data:/data/db
+networks:
+  ecommerce-starter-app:
+    driver: bridge
+volumes:
+  node_modules:
+  mongo-data:
+    driver: local

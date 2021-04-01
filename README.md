@@ -8,6 +8,66 @@ React TypeScript best practices are applied as recommended by [React TypeScript 
 
 🚧 Work In Progress: See Projects for details. 🚧
 
+## Before Starting
+
+Either configure environment variables with Docker or add an `.env` file to the `server` directory.
+
+Then specify the following:
+
+- `DEV_DB`: a MongoDB local connection string. If using Docker make sure it has this local pattern, where `mongo` refers to the name used by the compose file:
+
+  ```
+  mongodb://mongo:27017/collection-name
+  ```
+
+  _Using MongoDB Atlas is possible, but is beyond the scope of this Readme. However, please note that if Atlas is used, the Docker compose file will need to be modified to remove the `mongo` image._
+
+- `JWT_SECRET`: any random string for development (for production see the [NestJS docs](https://docs.nestjs.com/security/authentication))
+
+## Getting Started with Development using Docker
+
+For the first time run with the `--build` flag:
+
+```
+docker-compose up --build
+```
+
+Then subsequent starts should be run with:
+
+```
+docker-compose up
+```
+
+To end the development session run:
+
+```
+docker-compose down
+```
+
+To clear out any volumes add the `-v` or `--volumes` flag:
+
+_Note that this will clear any data stored in the containers or images._
+
+```
+docker-compose down --volumes
+```
+
+## Getting Started without Docker
+
+If a local MongoDB instance is used, please ensure it running first.
+
+In the directory `server`, start in watch mode by running:
+
+```
+npm run start:dev
+```
+
+In the directory `client`, start React in development mode by running:
+
+```
+npm start
+```
+
 # Key Features:
 
 ## Custom Contexts
@@ -157,7 +217,6 @@ $ npm run test:cov
 ## Built With
 
 - NestJS
-- Express.js
 - Mongoose
 - Passport
 - Bcrypt
