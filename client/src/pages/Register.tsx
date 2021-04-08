@@ -1,9 +1,8 @@
-import axios from "axios";
 import React, { ReactElement, useRef, useState } from "react";
 import { Form, Col, Button, Alert } from "react-bootstrap";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
-import { API_PATHS } from "../API";
+import { useAuth, handleRegisterUser } from "../contexts/AuthContext";
 
 export default function Register(): ReactElement {
   const nameRef = useRef<HTMLInputElement>(null);
@@ -16,10 +15,13 @@ export default function Register(): ReactElement {
   const cityRef = useRef<HTMLInputElement>(null);
   const stateRef = useRef<HTMLInputElement>(null);
   const postalRef = useRef<HTMLInputElement>(null);
+  const countryRef = useRef<HTMLInputElement>(null);
 
   const history = useHistory();
 
   const [error, setError] = useState("");
+
+  const { dispatch } = useAuth();
 
   async function handleSubmit(e: React.SyntheticEvent): Promise<void> {
     e.preventDefault();
@@ -29,27 +31,31 @@ export default function Register(): ReactElement {
     }
 
     const newUserData = {
-      name: nameRef.current?.value,
-      email: emailRef.current?.value,
-      password: psw1Ref.current?.value,
-      street: streetRef.current?.value,
-      city: cityRef.current?.value,
-      state: stateRef.current?.value,
-      postalCode: postalRef.current?.value,
+      name: nameRef.current!.value,
+      email: emailRef.current!.value,
+      password: psw1Ref.current!.value,
+      street: streetRef.current!.value,
+      city: cityRef.current!.value,
+      state: stateRef.current!.value,
+      postalCode: postalRef.current!.value,
+      country: countryRef.current!.value,
     };
 
     try {
       setError("");
-      await axios.post(API_PATHS.registerUser, newUserData);
+      await handleRegisterUser(dispatch, newUserData);
       history.push("/");
     } catch (error) {
-      setError(error);
+      if (!error.response) {
+        setError("Failed to register user.");
+      }
+      setError(error.response.data.message);
     }
   }
 
   return (
     <>
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit} className="mb-4">
         <h1>Register</h1>
 
         {error ? <Alert variant="danger">{error}</Alert> : null}
@@ -112,6 +118,11 @@ export default function Register(): ReactElement {
           <Form.Group as={Col} controlId="formGridState">
             <Form.Label>State/Province</Form.Label>
             <Form.Control ref={stateRef} required></Form.Control>
+          </Form.Group>
+
+          <Form.Group as={Col} controlId="formGridCountry">
+            <Form.Label>Country</Form.Label>
+            <Form.Control ref={countryRef} required></Form.Control>
           </Form.Group>
 
           <Form.Group controlId="formGridZip">

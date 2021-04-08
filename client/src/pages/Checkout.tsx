@@ -1,14 +1,6 @@
-import React, { ReactElement, useRef, useState } from "react";
-import {
-  Alert,
-  Button,
-  Col,
-  Container,
-  Form,
-  ListGroup,
-  Row,
-} from "react-bootstrap";
-import { useHistory } from "react-router";
+import React, { ReactElement, useRef } from "react";
+import { Button, Col, Container, Form, ListGroup, Row } from "react-bootstrap";
+// import { useHistory } from "react-router";
 
 export default function Checkout(): ReactElement {
   const nameRef = useRef<HTMLInputElement>(null);
@@ -19,9 +11,9 @@ export default function Checkout(): ReactElement {
   const stateRef = useRef<HTMLInputElement>(null);
   const postalRef = useRef<HTMLInputElement>(null);
 
-  const history = useHistory();
+  // const history = useHistory();
 
-  const [error, setError] = useState("");
+  // const [error, setError] = useState("");
 
   async function handleSubmit(e: React.SyntheticEvent): Promise<void> {
     e.preventDefault();
@@ -42,7 +34,7 @@ export default function Checkout(): ReactElement {
           </ListGroup>
         </Container>
         <Form as={Col} onSubmit={handleSubmit}>
-          {error ? <Alert variant="danger">{error}</Alert> : null}
+          {/* {error ? <Alert variant="danger">{error}</Alert> : null} */}
 
           <Form.Group controlId="formName">
             <Form.Label>Name</Form.Label>

@@ -1,8 +1,18 @@
 import React, { ReactElement } from "react";
-import { Button, Form, FormControl, Nav, Navbar } from "react-bootstrap";
+import {
+  Button,
+  Form,
+  FormControl,
+  Nav,
+  Navbar,
+  NavDropdown,
+} from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function TopNav(): ReactElement {
+  const { state, dispatch } = useAuth();
+
   return (
     <Navbar bg="light" expand="lg">
       <Navbar.Brand as={Link} to="/">
@@ -20,27 +30,38 @@ export default function TopNav(): ReactElement {
         </Nav>
 
         <Nav className="ml-auto">
-          <Nav.Link as={Link} to="/register">
-            Register
-          </Nav.Link>
-          <Nav.Link as={Link} to="/login">
-            Login
-          </Nav.Link>
+          {state.currentUser ? (
+            <>
+              <NavDropdown
+                title={`Welcome, ${state.currentUser.name}`}
+                id="topNav"
+              >
+                <NavDropdown.Item as={Link} to="/">
+                  Update Profile
+                </NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/">
+                  Order History
+                </NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item onClick={() => dispatch({ type: "logout" })}>
+                  Logout
+                </NavDropdown.Item>
+              </NavDropdown>
+            </>
+          ) : (
+            <>
+              <Nav.Link as={Link} to="/register">
+                Register
+              </Nav.Link>
+              <Nav.Link as={Link} to="/login">
+                Login
+              </Nav.Link>
+            </>
+          )}
+
           <Nav.Link as={Link} to="/cart">
             Cart
           </Nav.Link>
-
-          {/* <NavDropdown title="Dropdown" id="topNav">
-            <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.2">
-              Another action
-            </NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-            <NavDropdown.Divider />
-            <NavDropdown.Item href="#action/3.4">
-              Separated link
-            </NavDropdown.Item>
-          </NavDropdown> */}
         </Nav>
 
         <Form inline>

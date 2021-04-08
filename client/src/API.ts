@@ -1,5 +1,5 @@
 import axios from "axios";
-import { RegisterUserInterface, UserDataInterface } from "./common-interfaces";
+import { UserRegisterData } from "./common-interfaces";
 
 export const API_BASE_URL: string = "http://localhost:5000";
 
@@ -26,18 +26,27 @@ export const API_PATHS = {
 
   // POST
   loginUser: `${API_BASE_URL}/auth/login`,
+
+  // GET
+  getUser: `${API_BASE_URL}/auth/profile`,
 };
 
-export async function registerUser(
-  newUserData: RegisterUserInterface
-): Promise<any> {
+export async function registerUser(newUserData: UserRegisterData) {
   return await axios.post(`${API_BASE_URL}/users`, newUserData);
 }
 
-export async function loginUser(
-  userLoginData: UserDataInterface
-): Promise<any> {
-  return await axios.post(`${API_BASE_URL}/auth/login`, userLoginData);
+export async function loginUser(loginData: {
+  email: string;
+  password: string;
+}) {
+  return await axios.post(`${API_BASE_URL}/auth/login`, loginData);
+}
+
+export async function getUserProfile(tokenToAuthenticate: string) {
+  const config = {
+    headers: { Authorization: `Bearer ${tokenToAuthenticate}` },
+  };
+  return await axios.get(`${API_BASE_URL}/auth/profile`, config);
 }
 
 export async function getAllItems(currentPage = 1, itemLimit = 12) {
@@ -46,6 +55,6 @@ export async function getAllItems(currentPage = 1, itemLimit = 12) {
   );
 }
 
-export async function getItemById(id: string): Promise<any> {
+export async function getItemById(id: string) {
   return await axios.get(`${API_BASE_URL}/items/${id}`);
 }

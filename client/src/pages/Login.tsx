@@ -1,8 +1,7 @@
-import axios from "axios";
 import React, { ReactElement, useRef, useState } from "react";
 import { Alert, Button, Form } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
-import { API_PATHS } from "../API";
+import { useAuth, handleLoginUser } from "../contexts/AuthContext";
 
 export default function Login(): ReactElement {
   const emailRef = useRef<HTMLInputElement>(null);
@@ -12,17 +11,19 @@ export default function Login(): ReactElement {
 
   const history = useHistory();
 
-  async function handleLogin(e: React.SyntheticEvent): Promise<void> {
+  const { dispatch } = useAuth();
+
+  async function handleLoginSumbit(e: React.SyntheticEvent): Promise<void> {
     e.preventDefault();
 
     const userLoginData = {
-      email: emailRef.current?.value,
-      password: passwordRef.current?.value,
+      email: emailRef.current!.value,
+      password: passwordRef.current!.value,
     };
 
     try {
       setError("");
-      await axios.post(API_PATHS.loginUser, userLoginData);
+      await handleLoginUser(dispatch, userLoginData);
       history.push("/");
     } catch (error) {
       setError("Failed to login.");
@@ -31,9 +32,9 @@ export default function Login(): ReactElement {
 
   return (
     <>
-      <Form onSubmit={handleLogin} className="mb-4">
+      <Form onSubmit={handleLoginSumbit} className="mb-4">
         <h1>Login</h1>
-        {error ? <Alert>{error}</Alert> : null}
+        {error ? <Alert variant="danger">{error}</Alert> : null}
         <Form.Group controlId="formGroupEmail">
           <Form.Label>Email address</Form.Label>
           <Form.Control

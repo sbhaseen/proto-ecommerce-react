@@ -1,5 +1,5 @@
 export interface Item {
-  _id: string;
+  _id?: string;
   productName: string;
   brand: string;
   stockQty: number;
@@ -15,15 +15,19 @@ export interface PaginatedItems {
   data?: Item[];
 }
 
-export interface UserDataInterface {
+export interface UserStoredData {
+  id: string;
+  email: string;
+  name: string;
+}
+
+export interface UserLoginData {
   email: string;
   password: string;
 }
 
-export interface RegisterUserInterface extends UserDataInterface {
+export interface UserRegisterData extends UserLoginData {
   name: string;
-  email: string;
-  password: string;
   street: string;
   city: string;
   state: string;

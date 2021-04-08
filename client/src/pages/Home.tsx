@@ -29,7 +29,7 @@ export default function Home(): ReactElement {
         <h1>Welcome to an E-Commerce Starter Site!</h1>
         <p>
           All your online shopping needs in one place!{" "}
-          <Link to="login">Login</Link> or <Link to="Register">Register</Link>{" "}
+          <Link to="login">Login</Link> or <Link to="register">Register</Link>{" "}
           now to get started.
         </p>
         <p>
