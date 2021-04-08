@@ -1,7 +1,6 @@
-import axios from "axios";
 import React, { ReactElement, useState, useEffect } from "react";
 import { Container, Pagination } from "react-bootstrap";
-import { API_PATHS } from "../API";
+import { getAllItems } from "../API";
 import { PaginatedItems } from "../common-interfaces";
 import MapCards from "../components/MapCards";
 import PaginationNav from "../components/PaginationNav";
@@ -18,32 +17,40 @@ export default function Items(): ReactElement {
 
   const itemLimit = 12;
 
+  async function getPaginatedData(
+    currentPage: number,
+    itemLimit: number
+  ): Promise<any> {
+    try {
+      const res = await getAllItems(currentPage, itemLimit);
+
+      setItems(res.data);
+
+      if (res.data.total) {
+        setTotalPages(res.data.total.pages);
+      }
+
+      if (res.data.next) {
+        setNextPage(res.data.next);
+      } else {
+        setNextPage(null);
+      }
+
+      if (res.data.previous) {
+        setPreviousPage(res.data.previous);
+      } else {
+        setPreviousPage(null);
+      }
+    } catch (error) {
+      return error;
+    } finally {
+      setLoading(false);
+    }
+  }
+
   useEffect(() => {
-    axios
-      .get(`${API_PATHS.getAllItems}?page=${currentPage}&limit=${itemLimit}`)
-      .then((res) => {
-        setItems(res.data);
-        if (res.data.total) {
-          setTotalPages(res.data.total.pages);
-        }
-
-        if (res.data.next) {
-          setNextPage(res.data.next);
-        } else {
-          setNextPage(null);
-        }
-
-        if (res.data.previous) {
-          setPreviousPage(res.data.previous);
-        } else {
-          setPreviousPage(null);
-        }
-      })
-      .catch((err) => {
-        return err;
-      });
-    setLoading(false);
-  }, [currentPage]);
+    getPaginatedData(currentPage, itemLimit);
+  }, [currentPage, itemLimit]);
 
   function handleNextPage(): void {
     if (nextPage === null) return;
@@ -70,11 +77,11 @@ export default function Items(): ReactElement {
       <h1 className="text-center">Items</h1>
       <Container className={styles.cardsContainer}>
         {loading ? (
-          <h1>Loading...</h1>
+          <p>Loading...</p>
         ) : items?.data ? (
           items.data.map(MapCards)
         ) : (
-          <p>No Data</p>
+          <p>No data to display.</p>
         )}
       </Container>
       {!loading && items?.data ? (
